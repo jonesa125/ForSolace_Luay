@@ -1,6 +1,5 @@
 package com.solace.cloud.aws.resource.manager;
 
-import com.solace.cloud.aws.resource.AwsResourceFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import software.amazon.awssdk.services.ec2.model.*;
@@ -17,12 +16,17 @@ public class Ec2ResourceManager implements CloudResourceManager<Instance> {
     }
 
 
-    public void create(Map<String,String> ec2Map, String subnetId) {
+    public void create(Map<String,String> ec2Map, String subnetId, String groupId) {
         // Create a request to launch an EC2 instance
         RunInstancesRequest runRequest = RunInstancesRequest.builder()
                 .imageId(ec2Map.get("ami")) // Replace with a valid AMI ID
                 .instanceType(ec2Map.get("instanceType"))
                 .subnetId(subnetId)
+                .networkInterfaces(InstanceNetworkInterfaceSpecification.builder()
+                        .associatePublicIpAddress(true)
+                        .deviceIndex(0)
+                        .groups(groupId) // Include the security group
+                        .build())
                 .minCount(1)
                 .maxCount(1)
                 .build();

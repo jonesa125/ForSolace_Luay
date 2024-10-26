@@ -1,24 +1,23 @@
 package com.solace.cloud.aws.service;
 
-import software.amazon.awssdk.services.ec2.model.CreateSubnetRequest;
-import software.amazon.awssdk.services.ec2.model.CreateSubnetResponse;
-import software.amazon.awssdk.services.ec2.model.CreateVpcRequest;
-import software.amazon.awssdk.services.ec2.model.CreateVpcResponse;
-import software.amazon.awssdk.services.ec2.model.RunInstancesResponse;
-import software.amazon.awssdk.services.ec2.model.RunInstancesRequest;
-import software.amazon.awssdk.services.ec2.model.StopInstancesResponse;
-import software.amazon.awssdk.services.ec2.model.StopInstancesRequest;
-import software.amazon.awssdk.services.ec2.model.Instance;
+import software.amazon.awssdk.services.ec2.model.*;
 import software.amazon.awssdk.services.rds.model.CreateDbInstanceResponse;
 import software.amazon.awssdk.services.rds.model.CreateDbInstanceRequest;
 import software.amazon.awssdk.services.rds.model.DBInstance;
-import software.amazon.awssdk.services.ec2.model.InstanceState;
-import software.amazon.awssdk.services.ec2.model.InstanceStateChange;
 
 import java.util.Collections;
 
 
 public class MockAwsService implements CasAwsService {
+    @Override
+    public CreateSecurityGroupResponse createSecurityGroup(CreateSecurityGroupRequest mockSecurityGroupRequest) {
+        // Simulate a response
+        return CreateSecurityGroupResponse.builder()
+                .groupId("mock-secgroup-id")
+                .build();
+    }
+
+
     @Override
     public CreateSubnetResponse createSubnet(CreateSubnetRequest mockSubnetRequest) {
         // Simulate a response

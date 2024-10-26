@@ -10,11 +10,12 @@ import java.util.Map;
 
 public class AwsResourceConfigMapper {
 
-    public static Map<String, String> VpcCreateConfigMapper(Vpc vpc, Subnet subnet){
+    public static Map<String, String> VpcCreateConfigMapper(Vpc vpc, Subnet subnet, String secGroup){
         Map<String, String> vpcParamsMap = new HashMap<>();
         vpcParamsMap.put("vpc_cidr", vpc.getCidrblock());
         vpcParamsMap.put("subnet_cidr", subnet.getCidrblock());
         vpcParamsMap.put("az_region", subnet.getAvzone());
+        vpcParamsMap.put("security_group", secGroup);
         return vpcParamsMap;
     }
 

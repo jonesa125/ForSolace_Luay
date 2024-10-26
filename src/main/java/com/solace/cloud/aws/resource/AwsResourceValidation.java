@@ -3,6 +3,7 @@ package com.solace.cloud.aws.resource;
 import com.solace.configHandler.aws.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import software.amazon.awssdk.services.ec2.model.SecurityGroup;
 
 import java.util.regex.Pattern;
 import java.util.HashMap;
@@ -39,8 +40,15 @@ public class AwsResourceValidation {
         if (!subnet.getAvzone().startsWith(region)) {
             throw new IllegalArgumentException("Subnet availability zone: " + subnet.getAvzone() + "is not in the same region as the configuration specifies: " + region);
         }
-        logger.info("VPC Configuration is valid.");
-        return AwsResourceConfigMapper.VpcCreateConfigMapper(vpc, subnet);
+
+        //Validate Security Group info
+        String secGroup = vpc.getSecuritygroup();
+        if (secGroup == null) {
+            throw new IllegalArgumentException("Security group name is missing from config");
+        }
+
+        logger.debug("VPC Create Configuration is valid.");
+        return AwsResourceConfigMapper.VpcCreateConfigMapper(vpc, subnet, secGroup);
     }
 
     private static boolean isValidCIDR(String cidr) {
@@ -60,7 +68,7 @@ public class AwsResourceValidation {
         if (ec2.getAmi() == null) {
             throw new IllegalArgumentException("ec2 ami is missing");
         }
-        logger.info("EC2 Configuration is valid.");
+        logger.debug("EC2 Create Configuration is valid.");
         return AwsResourceConfigMapper.Ec2CreateConfigMapper(ec2);
     }
 
@@ -78,7 +86,7 @@ public class AwsResourceValidation {
             throw new IllegalArgumentException("ec2 id is missing");
         }
 
-        logger.info("EC2 Configuration is valid.");
+        logger.debug("EC2 Update Configuration is valid.");
         return AwsResourceConfigMapper.Ec2UpdateConfigMapper(ec2);
     }
 
@@ -119,7 +127,7 @@ public class AwsResourceValidation {
         if (rds.getRetention() == null) {
             throw new IllegalArgumentException("rds retention is missing");
         }
-        logger.info("RDS Configuration is valid.");
+        logger.debug("RDS Create Configuration is valid.");
         return AwsResourceConfigMapper.RdsCreateConfigMapper(rds);
     }
 }

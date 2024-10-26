@@ -43,6 +43,7 @@ public class CloudProviderFactoryTest {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
             CloudProviderFactory.getResourceManager(cloudConfig);
         });
+        System.out.println(exception.getMessage());
         assertEquals("Unknown provider: unknown", exception.getMessage());
     }
 

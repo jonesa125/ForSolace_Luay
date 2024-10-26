@@ -1,5 +1,7 @@
 package com.solace.cloud.aws.service;
 
+import software.amazon.awssdk.services.ec2.model.CreateSecurityGroupRequest;
+import software.amazon.awssdk.services.ec2.model.CreateSecurityGroupResponse;
 import software.amazon.awssdk.services.ec2.model.CreateSubnetRequest;
 import software.amazon.awssdk.services.ec2.model.CreateSubnetResponse;
 import software.amazon.awssdk.services.ec2.model.CreateVpcRequest;
@@ -14,6 +16,7 @@ import software.amazon.awssdk.services.rds.model.CreateDbInstanceRequest;
 public interface CasAwsService {
     CreateVpcResponse createVpc(CreateVpcRequest vpcRequest);
     CreateSubnetResponse createSubnet(CreateSubnetRequest request);
+    CreateSecurityGroupResponse createSecurityGroup(CreateSecurityGroupRequest request);
     RunInstancesResponse runInstances(RunInstancesRequest request);
     StopInstancesResponse stopInstances(StopInstancesRequest request);
     CreateDbInstanceResponse createRdsInstance(CreateDbInstanceRequest request);
