@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 import com.solace.cloud.CloudResourceManager;
 
-public class VpcResourceManager implements CloudResourceManager<Vpc> {
+public class VpcResourceManager implements CloudResourceManager {
     private static final Logger logger = LoggerFactory.getLogger(VpcResourceManager.class);
     private final MockAwsService mockAws;
     public VpcResourceManager(MockAwsService service) {
@@ -25,10 +25,11 @@ public class VpcResourceManager implements CloudResourceManager<Vpc> {
         CreateVpcResponse vpcResponse = mockAws.createVpc(request);
         // Output the VPC ID
         logger.info("Created VPC with ID: " + vpcResponse.vpc().vpcId());
-        CreateSubnetResponse subnetResponse = createSubnet(vpcResponse.vpc().vpcId(), subnetCidrBlock, vpcDataMap.get("az_region"));
+        SubnetResourceManager subnetManager = new SubnetResourceManager(mockAws);
+        CreateSubnetResponse subnetResponse = subnetManager.create(vpcResponse.vpc().vpcId(), subnetCidrBlock, vpcDataMap.get("az_region"));
 
-
-        CreateSecurityGroupResponse secGroupResponse = createSecurityGroup(vpcResponse.vpc().vpcId(), vpcDataMap.get("security_group"));
+        SecurityGroupResourceManager sgManager = new SecurityGroupResourceManager(mockAws);
+        CreateSecurityGroupResponse secGroupResponse = sgManager.create(vpcResponse.vpc().vpcId(), vpcDataMap.get("security_group"));
 
         if (vpcResponse !=null && subnetResponse != null && secGroupResponse != null) {
             Map<String, String> awsVpcDetails = new HashMap<>();
@@ -38,33 +39,6 @@ public class VpcResourceManager implements CloudResourceManager<Vpc> {
             return awsVpcDetails;
         }
         return null;
-    }
-
-    private CreateSubnetResponse createSubnet(String vpcId, String subnetCidrBlock, String region) {
-        CreateSubnetRequest subnetRequest = CreateSubnetRequest.builder()
-                .vpcId(vpcId)
-                .cidrBlock(subnetCidrBlock)
-                .availabilityZone(region)
-                .build();
-
-        CreateSubnetResponse createSubnetResponse = mockAws.createSubnet(subnetRequest);
-
-        // Output the subnet ID
-        logger.info("Created subnet with ID: " + createSubnetResponse.subnet().subnetId());
-        return createSubnetResponse;
-    }
-
-    private CreateSecurityGroupResponse createSecurityGroup(String vpcId, String secGroupName){
-        CreateSecurityGroupRequest secGroupRequest = CreateSecurityGroupRequest.builder()
-                .groupName(secGroupName)
-                .vpcId(vpcId)
-                .build();
-
-        CreateSecurityGroupResponse createSecGroupResponse= mockAws.createSecurityGroup(secGroupRequest);
-
-        // Output the subnet ID
-        logger.info("Created security group with ID: " + createSecGroupResponse.groupId());
-        return createSecGroupResponse;
     }
 
     public boolean validate() {

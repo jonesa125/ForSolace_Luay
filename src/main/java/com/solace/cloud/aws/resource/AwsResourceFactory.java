@@ -1,6 +1,7 @@
 package com.solace.cloud.aws.resource;
 
 import com.solace.cloud.CloudResourceFactory;
+import com.solace.cloud.aws.AwsConstants;
 import com.solace.configHandler.PropertiesInterface;
 import com.solace.configHandler.aws.Properties;
 import com.solace.configHandler.aws.*;
@@ -21,8 +22,8 @@ public class AwsResourceFactory implements CloudResourceFactory {
             Properties properties = (Properties) props;
             logger.info("action " + properties.getAction());
             String action = properties.getAction();
-            if (!action.equals("create") && !action.equals("update") && !action.equals("delete")) {
-                throw new IllegalArgumentException("Invalid action. The only supported options are create, update or delete");
+            if (!action.equals(AwsConstants.CREATE) && !action.equals(AwsConstants.UPDATE)) {
+                throw new IllegalArgumentException("Invalid action. The only supported options are create or update");
             }
             if (action.equals("create")) {
                 createResources(properties);
@@ -107,13 +108,13 @@ public class AwsResourceFactory implements CloudResourceFactory {
                 Map<String, String> ec2Props = AwsResourceValidation.validateUpdateEC2Config(features.getEc2());
                 if (ec2Props != null) {
                     Ec2ResourceManager ec2Manager = new Ec2ResourceManager(awsService);
-                    ec2Manager.update(ec2Props.get("id"), ec2Props.get("state"));
+                    ec2Manager.update(ec2Props.get(AwsConstants.ID), ec2Props.get(AwsConstants.STATE));
                 }
 
                 Map<String, String> rdsProps = AwsResourceValidation.validateUpdateRDSConfig(features.getRds());
                 if (rdsProps != null) {
                     RdsResourceManager rdsManager = new RdsResourceManager(awsService);
-                    rdsManager.update(rdsProps.get("id"), rdsProps.get("state"));
+                    rdsManager.update(rdsProps.get(AwsConstants.ID), rdsProps.get(AwsConstants.STATE));
                 }
             } catch (Exception e) {
                 logger.error(e.getMessage());

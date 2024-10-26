@@ -1,5 +1,6 @@
 package com.solace.cloud.aws.resource.manager;
 
+import com.solace.cloud.aws.AwsConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import software.amazon.awssdk.services.ec2.model.StopInstancesRequest;
@@ -11,7 +12,7 @@ import com.solace.cloud.aws.service.MockAwsService;
 import com.solace.cloud.CloudResourceManager;
 
 
-public class RdsResourceManager implements CloudResourceManager<DBInstance> {
+public class RdsResourceManager implements CloudResourceManager {
     private static final Logger logger = LoggerFactory.getLogger(RdsResourceManager.class);
     private final MockAwsService mockAws;
     public RdsResourceManager(MockAwsService service) {
@@ -42,7 +43,7 @@ public class RdsResourceManager implements CloudResourceManager<DBInstance> {
     }
 
     public void update(String dbId, String state) {
-        if (state.equals("stop")) {
+        if (state.equals(AwsConstants.STOP)) {
             StopDbInstanceRequest stopRequest = StopDbInstanceRequest.builder()
                     .dbInstanceIdentifier(dbId)
                     .build();

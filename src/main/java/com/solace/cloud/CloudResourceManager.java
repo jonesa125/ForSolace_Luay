@@ -1,5 +1,5 @@
 package com.solace.cloud;
 
-public interface CloudResourceManager<T> {
+public interface CloudResourceManager {
     public boolean validate();
 }

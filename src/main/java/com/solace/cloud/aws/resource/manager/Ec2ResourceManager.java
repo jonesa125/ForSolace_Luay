@@ -1,5 +1,6 @@
 package com.solace.cloud.aws.resource.manager;
 
+import com.solace.cloud.aws.AwsConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import software.amazon.awssdk.services.ec2.model.*;
@@ -8,7 +9,7 @@ import java.util.Map;
 import com.solace.cloud.aws.service.MockAwsService;
 import com.solace.cloud.CloudResourceManager;
 
-public class Ec2ResourceManager implements CloudResourceManager<Instance> {
+public class Ec2ResourceManager implements CloudResourceManager {
     private static final Logger logger = LoggerFactory.getLogger(Ec2ResourceManager.class);
     private final MockAwsService mockAws;
     public Ec2ResourceManager(MockAwsService service) {
@@ -45,7 +46,7 @@ public class Ec2ResourceManager implements CloudResourceManager<Instance> {
     }
 
     public void update(String ec2Id, String state) {
-        if (state.equals("stop")) {
+        if (state.equals(AwsConstants.STOP)) {
             StopInstancesRequest stopRequest = StopInstancesRequest.builder()
                     .instanceIds(ec2Id)
                     .build();
