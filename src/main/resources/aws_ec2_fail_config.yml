@@ -1,0 +1,13 @@
+iac:
+  name: infrastructure_as_code_app
+  version: 1.0
+  cloud:
+    provider: aws
+    properties:
+      region: us-east-2
+      action: create
+      features:
+        ec2:
+          insttype: t2.micro
+          ami: ami-0866a3c8686eaeeba
+

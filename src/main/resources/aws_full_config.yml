@@ -1,0 +1,26 @@
+iac:
+  name: infrastructure_as_code_app
+  version: 1.0
+  cloud:
+    provider: aws
+    properties:
+      region: us-east-2
+      action: create
+      features:
+        vpc:
+          cidrblock: 10.0.0.0/16
+          subnet:
+            cidrblock: 10.0.1.0/24
+            avzone: us-east-2a
+        ec2:
+          insttype: t2.micro
+          ami: ami-0866a3c8686eaeeba
+        rds:
+          identifier: db-testing
+          storage: 40
+          insttype: db.t2.micro
+          engine: mysql
+          username: admin
+          password: password123!
+          name: db_test
+          retention: 7
