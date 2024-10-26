@@ -130,4 +130,21 @@ public class AwsResourceValidation {
         logger.debug("RDS Create Configuration is valid.");
         return AwsResourceConfigMapper.RdsCreateConfigMapper(rds);
     }
+
+    public static Map<String, String> validateUpdateRDSConfig(Rds rds) {
+        if (rds == null) {
+            return null;
+        }
+
+        if (rds.getState() == null) {
+            throw new IllegalArgumentException("rds state is missing");
+        }
+
+        if (rds.getDbid() == null) {
+            throw new IllegalArgumentException("rds id is missing");
+        }
+
+        logger.debug("RDS Configuration is valid.");
+        return AwsResourceConfigMapper.RdsUpdateConfigMapper(rds);
+    }
 }

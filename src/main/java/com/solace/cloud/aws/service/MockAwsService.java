@@ -1,9 +1,7 @@
 package com.solace.cloud.aws.service;
 
 import software.amazon.awssdk.services.ec2.model.*;
-import software.amazon.awssdk.services.rds.model.CreateDbInstanceResponse;
-import software.amazon.awssdk.services.rds.model.CreateDbInstanceRequest;
-import software.amazon.awssdk.services.rds.model.DBInstance;
+import software.amazon.awssdk.services.rds.model.*;
 
 import java.util.Collections;
 
@@ -51,7 +49,7 @@ public class MockAwsService implements CasAwsService {
     public StopInstancesResponse stopInstances(StopInstancesRequest mockInstanceRequest) {
         // Simulate a response
         InstanceStateChange mockInstance = InstanceStateChange.builder()
-                .instanceId("i-imadethisec2stop")
+                .instanceId(mockInstanceRequest.instanceIds().get(0))
                 .currentState(InstanceState.builder()
                         .name("stopping") // Set the current state
                         .build())
@@ -69,11 +67,22 @@ public class MockAwsService implements CasAwsService {
     public CreateDbInstanceResponse createRdsInstance(CreateDbInstanceRequest mockDbRequest) {
         // Simulate a response
         DBInstance mockDbInstance = DBInstance.builder()
-                .dbInstanceIdentifier("my-db-instance")
-                .dbInstanceStatus("available")
+                .dbInstanceIdentifier(mockDbRequest.dbInstanceIdentifier())
                 .build();
 
         return CreateDbInstanceResponse.builder()
+                .dbInstance(mockDbInstance)
+                .build();
+    }
+
+    @Override
+    public StopDbInstanceResponse stopRdsInstance(StopDbInstanceRequest mockDbRequest) {
+        // Simulate a response
+        DBInstance mockDbInstance = DBInstance.builder()
+                .dbInstanceIdentifier(mockDbRequest.dbInstanceIdentifier())
+                .build();
+
+        return StopDbInstanceResponse.builder()
                 .dbInstance(mockDbInstance)
                 .build();
     }

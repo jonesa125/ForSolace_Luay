@@ -1,6 +1,8 @@
 package com.solace.configHandler.aws;
 
 public class Rds {
+    private String dbid;
+    private String state;
     private String insttype;
     private String identifier;
     private String storage;
@@ -11,6 +13,22 @@ public class Rds {
     private String retention;
 
     // Getters and Setters
+    public String getDbid() {
+        return dbid;
+    }
+
+    public void setDbid(String dbid) {
+        this.dbid = dbid;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
     public String getInsttype() {
         return insttype;
     }

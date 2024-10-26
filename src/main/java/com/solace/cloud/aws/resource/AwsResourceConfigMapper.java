@@ -46,4 +46,10 @@ public class AwsResourceConfigMapper {
         return rdsDetailsMap;
     }
 
+    public static Map<String, String> RdsUpdateConfigMapper(Rds rds) {
+        Map<String, String> rdsDetails = new HashMap<>();
+        rdsDetails.put("state", rds.getState());
+        rdsDetails.put("id", rds.getDbid());
+        return rdsDetails;
+    }
 }

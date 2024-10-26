@@ -2,6 +2,7 @@ package com.solace.cloud.aws.resource.manager;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import software.amazon.awssdk.services.ec2.model.StopInstancesRequest;
 import software.amazon.awssdk.services.rds.model.*;
 
 import java.util.List;
@@ -37,6 +38,17 @@ public class RdsResourceManager implements CloudResourceManager<DBInstance> {
             String dbInstanceStatus = response.dbInstance().dbInstanceStatus();
             logger.info("Created Rds with ID: " + dbInstanceIdentifier);
             logger.info("Created Rds with status: " + dbInstanceStatus);
+        }
+    }
+
+    public void update(String dbId, String state) {
+        if (state.equals("stop")) {
+            StopDbInstanceRequest stopRequest = StopDbInstanceRequest.builder()
+                    .dbInstanceIdentifier(dbId)
+                    .build();
+
+            mockAws.stopRdsInstance(stopRequest);
+            logger.info("Stopped RDS instance: " + dbId);
         }
     }
 

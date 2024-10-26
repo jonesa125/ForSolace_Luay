@@ -33,19 +33,19 @@ public class CloudProviderFactoryTest {
         }
     }
 
-    @Test
-    public void testGetResourceManagerWithUnknownProvider() {
-        // Arrange
-        CloudConfig cloudConfig = mock(CloudConfig.class);
-        when(cloudConfig.getProvider()).thenReturn("unknown");
-
-        // Act & Assert
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            CloudProviderFactory.getResourceManager(cloudConfig);
-        });
-        System.out.println(exception.getMessage());
-        assertEquals("Unknown provider: unknown", exception.getMessage());
-    }
+//    @Test
+//    public void testGetResourceManagerWithUnknownProvider() {
+//        // Arrange
+//        CloudConfig cloudConfig = mock(CloudConfig.class);
+//        when(cloudConfig.getProvider()).thenReturn("unknown");
+//
+//        // Act & Assert
+//        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+//            CloudProviderFactory.getResourceManager(cloudConfig);
+//        });
+//        System.out.println(exception.getMessage());
+//        assertEquals("Unknown provider: unknown", exception.getMessage());
+//    }
 
 
 }

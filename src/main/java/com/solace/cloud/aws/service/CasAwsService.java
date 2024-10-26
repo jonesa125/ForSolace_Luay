@@ -12,6 +12,8 @@ import software.amazon.awssdk.services.ec2.model.StopInstancesResponse;
 import software.amazon.awssdk.services.ec2.model.StopInstancesRequest;
 import software.amazon.awssdk.services.rds.model.CreateDbInstanceResponse;
 import software.amazon.awssdk.services.rds.model.CreateDbInstanceRequest;
+import software.amazon.awssdk.services.rds.model.StopDbInstanceRequest;
+import software.amazon.awssdk.services.rds.model.StopDbInstanceResponse;
 
 public interface CasAwsService {
     CreateVpcResponse createVpc(CreateVpcRequest vpcRequest);
@@ -20,4 +22,5 @@ public interface CasAwsService {
     RunInstancesResponse runInstances(RunInstancesRequest request);
     StopInstancesResponse stopInstances(StopInstancesRequest request);
     CreateDbInstanceResponse createRdsInstance(CreateDbInstanceRequest request);
+    StopDbInstanceResponse stopRdsInstance(StopDbInstanceRequest mockDbRequest);
 }

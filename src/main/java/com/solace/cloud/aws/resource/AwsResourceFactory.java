@@ -101,10 +101,19 @@ public class AwsResourceFactory implements CloudResourceFactory {
         Features features = properties.getFeatures();
         if (features != null) {
             try {
+                if (features.getVpc() != null) {
+                    throw new IllegalArgumentException("VPC, Subnets and Security groups cannot change states. They can only be created or deleted");
+                }
                 Map<String, String> ec2Props = AwsResourceValidation.validateUpdateEC2Config(features.getEc2());
                 if (ec2Props != null) {
                     Ec2ResourceManager ec2Manager = new Ec2ResourceManager(awsService);
                     ec2Manager.update(ec2Props.get("id"), ec2Props.get("state"));
+                }
+
+                Map<String, String> rdsProps = AwsResourceValidation.validateUpdateRDSConfig(features.getRds());
+                if (rdsProps != null) {
+                    RdsResourceManager rdsManager = new RdsResourceManager(awsService);
+                    rdsManager.update(rdsProps.get("id"), rdsProps.get("state"));
                 }
             } catch (Exception e) {
                 logger.error(e.getMessage());

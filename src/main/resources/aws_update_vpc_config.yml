@@ -1,0 +1,11 @@
+iac:
+  name: infrastructure_as_code_app
+  version: 1.0
+  cloud:
+    provider: aws
+    properties:
+      region: us-east-2
+      action: update
+      features:
+        vpc:
+          state: reboot

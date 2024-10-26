@@ -4,6 +4,7 @@ public class Vpc {
     private String cidrblock;
     private Subnet subnet;
     private String securitygroup;
+    private String state;
 
     // Getters and Setters
     public String getCidrblock() {
@@ -28,5 +29,13 @@ public class Vpc {
 
     public void setSecuritygroup(String securitygroup) {
         this.securitygroup = securitygroup;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
     }
 }
