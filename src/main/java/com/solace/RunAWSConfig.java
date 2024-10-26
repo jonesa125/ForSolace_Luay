@@ -12,7 +12,7 @@ import java.io.InputStream;
 
 public class RunAWSConfig {
     public static String AWS = "aws";
-    private static final Logger logger = LoggerFactory.getLogger("RunAWSConfig");
+    private static final Logger logger = LoggerFactory.getLogger(RunAWSConfig.class);
 
     public static void main(String[] args) {
         Options options = new Options();
@@ -29,7 +29,7 @@ public class RunAWSConfig {
                 Yaml yaml = new Yaml();
                 InputStream inputStream = RunAWSConfig.class.getClassLoader().getResourceAsStream(configFileName);
                 if (inputStream == null) {
-                    throw new IllegalArgumentException("File not found: " + configFileName);
+                    logger.error("File not found: " + configFileName);
                 }
 
                 RootConfig rootConfig = yaml.loadAs(inputStream, RootConfig.class);
@@ -42,12 +42,12 @@ public class RunAWSConfig {
                     }
                 }
             } else {
-                logger.info("Configuration file is required.");
+                logger.error("Configuration file is required.");
             }
         } catch (ParseException e) {
-            logger.info("Error parsing command line arguments: " + e.getMessage());
+            logger.error("Error parsing command line arguments: " + e.getMessage());
         } catch (Exception e) {
-            logger.info("Unknown error: " + e.getMessage());
+            logger.error("Unknown error: " + e.getMessage());
             e.printStackTrace();
         }
     }

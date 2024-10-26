@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class AwsResourceValidation {
-    private static final Logger logger = LoggerFactory.getLogger("AwsResourceValidation");
+    private static final Logger logger = LoggerFactory.getLogger(AwsResourceValidation.class);
     // Regular expression for validating CIDR notation
     private static final String CIDR_REGEX =
             "^((25[0-5]|(2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9]))\\.){3}(25[0-5]|(2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9]))/([8-9]|[1][0-9]|[1][0-9]|2[0-4])$";

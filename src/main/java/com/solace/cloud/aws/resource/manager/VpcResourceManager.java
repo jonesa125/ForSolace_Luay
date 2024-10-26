@@ -12,7 +12,7 @@ import java.util.Map;
 import com.solace.cloud.CloudResourceManager;
 
 public class VpcResourceManager implements CloudResourceManager<Vpc> {
-    private static final Logger logger = LoggerFactory.getLogger("VpcResourceManager");
+    private static final Logger logger = LoggerFactory.getLogger(VpcResourceManager.class);
     private final MockAwsService mockAws;
     public VpcResourceManager(MockAwsService service) {
         this.mockAws = service;

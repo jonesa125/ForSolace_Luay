@@ -9,7 +9,7 @@ import com.solace.cloud.CloudResourceManager;
 
 
 public class RdsResourceManager implements CloudResourceManager<DBInstance> {
-    private static final Logger logger = LoggerFactory.getLogger("RdsResourceManager");
+    private static final Logger logger = LoggerFactory.getLogger(RdsResourceManager.class);
     private final MockAwsService mockAws;
     public RdsResourceManager(MockAwsService service) {
         this.mockAws = service;

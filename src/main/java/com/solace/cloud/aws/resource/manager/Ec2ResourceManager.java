@@ -10,7 +10,7 @@ import com.solace.cloud.aws.service.MockAwsService;
 import com.solace.cloud.CloudResourceManager;
 
 public class Ec2ResourceManager implements CloudResourceManager<Instance> {
-    private static final Logger logger = LoggerFactory.getLogger("Ec2ResourceManager");
+    private static final Logger logger = LoggerFactory.getLogger(Ec2ResourceManager.class);
     private final MockAwsService mockAws;
     public Ec2ResourceManager(MockAwsService service) {
         this.mockAws = service;

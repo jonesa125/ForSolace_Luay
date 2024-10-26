@@ -11,7 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class AwsResourceFactory implements CloudResourceFactory {
-    private static final Logger logger = LoggerFactory.getLogger("AwsResourceFactory");
+    private static final Logger logger = LoggerFactory.getLogger(AwsResourceFactory.class);
 
     @Override
     public void processResources(PropertiesInterface props) {
@@ -51,7 +51,7 @@ public class AwsResourceFactory implements CloudResourceFactory {
                         Ec2ResourceManager ec2Manager = new Ec2ResourceManager(awsService);
                         ec2Manager.create(ec2Props, subnetId);
                     } else {
-                        throw new IllegalArgumentException("Abort: Ec2 requires a public subnet. The subnet id has not been created");
+                        throw new IllegalArgumentException("Abort: Ec2 requires a public subnet. The subnet id is missing from config or failed to be created");
                     }
                 }
 
@@ -62,7 +62,7 @@ public class AwsResourceFactory implements CloudResourceFactory {
                 }
 
             } catch (Exception e) {
-                logger.info(e.getMessage());
+                logger.error(e.getMessage());
             }
         }
     }
@@ -81,7 +81,7 @@ public class AwsResourceFactory implements CloudResourceFactory {
                     ec2Manager.update(ec2Props.get("id"), ec2Props.get("state"));
                 }
             } catch (Exception e) {
-                logger.info(e.getMessage());
+                logger.error(e.getMessage());
             }
 
         }
