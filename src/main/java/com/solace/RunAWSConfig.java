@@ -47,7 +47,7 @@ public class RunAWSConfig {
         } catch (ParseException e) {
             logger.error("Error parsing command line arguments: " + e.getMessage());
         } catch (Exception e) {
-            logger.error("Unknown error: " + e.getMessage());
+            logger.error(e.getMessage());
             e.printStackTrace();
         }
     }

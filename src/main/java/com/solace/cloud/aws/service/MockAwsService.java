@@ -157,7 +157,7 @@ public class MockAwsService implements CasAwsService {
     public DescribeDbInstancesResponse describeRdsInstances(DescribeDbInstancesRequest mockDbRequest) {
         // Create a mock DBInstance
         DBInstance dbInstance = DBInstance.builder()
-                .dbInstanceIdentifier(mockDbRequest.dbInstanceIdentifier())
+                .dbInstanceIdentifier("db-id12345")
                 .dbInstanceClass("db.t2.micro")
                 .dbInstanceStatus("available")
                 .engine("mysql")
