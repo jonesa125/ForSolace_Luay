@@ -40,12 +40,33 @@ public class AwsResourceFactory implements CloudResourceFactory {
 
         Features features = properties.getFeatures();
         if (features != null) {
+            Map<String, String> awsVpcDetails = new HashMap<>();
             try {
-                Map<String, String> awsVpcDetails = createVpcResources(awsService, features, region);
-                createEc2Resources(awsService, features, awsVpcDetails);
+                awsVpcDetails = createVpcResources(awsService, features, region);
                 createRdsResources(awsService, features, awsVpcDetails);
             } catch (Exception e) {
                 logger.error(e.getMessage());
+                throw new RuntimeException("VPC failed to create");
+            }
+
+            try {
+                createEc2Resources(awsService, features, awsVpcDetails);
+            } catch (Exception e) {
+                logger.error(e.getMessage());
+                // Handle code for deleting a VPC - not implemented
+                //
+                // deleteVPC()
+                throw new RuntimeException("EC2 failed to create");
+            }
+
+            try {
+                createRdsResources(awsService, features, awsVpcDetails);
+            } catch (Exception e) {
+                logger.error(e.getMessage());
+                // Handle code for deleting a VPC - not implemented
+                //
+                // deleteVPC()
+                throw new RuntimeException("RDS failed to create");
             }
         }
     }
@@ -60,7 +81,7 @@ public class AwsResourceFactory implements CloudResourceFactory {
         return awsVpcDetails;
     }
 
-    private void createEc2Resources(CasAwsService awsService, Features features, Map<String, String> awsVpcDetails) {
+    private void createEc2Resources(CasAwsService awsService, Features features, Map<String, String> awsVpcDetails) throws InterruptedException {
         Map<String, String> ec2Props = AwsResourceValidation.validateCreateEC2Config(features.getEc2());
         if (ec2Props != null) {
             if (awsVpcDetails.isEmpty()) {
