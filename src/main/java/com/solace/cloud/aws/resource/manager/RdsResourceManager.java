@@ -77,7 +77,7 @@ public class RdsResourceManager implements CloudResourceManager {
             String dbInstanceStatus = response.dbInstances().get(0).dbInstanceStatus();
             logger.info("RDS instance is successfully created and in status: " + dbInstanceStatus);
         } else {
-            logger.warn("RDS instance not found after creation!");
+            throw new RuntimeException("Error: RDS instance not found after creation!");
         }
     }
 

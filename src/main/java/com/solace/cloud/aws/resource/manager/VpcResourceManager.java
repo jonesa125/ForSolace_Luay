@@ -84,6 +84,19 @@ public class VpcResourceManager implements CloudResourceManager {
         }
     }
 
+    public static void deleteVPC(String vpcId) {
+        try {
+            DeleteVpcRequest deleteVpcRequest = DeleteVpcRequest.builder()
+                    .vpcId(vpcId)
+                    .build();
+
+            //DeleteVpcResponse response = mockAws.deleteVpc(deleteVpcRequest);
+            logger.info("Successfully deleted VPC with ID: " + vpcId);
+        } catch (Ec2Exception e) {
+            throw new RuntimeException("Failed to delete VPC: " + e.awsErrorDetails().errorMessage());
+        }
+    }
+
     public boolean validate() {
         return true;
     }

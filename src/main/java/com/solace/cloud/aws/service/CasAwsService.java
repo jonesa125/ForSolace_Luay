@@ -11,6 +11,7 @@ public interface CasAwsService {
     CreateSecurityGroupResponse createSecurityGroup(CreateSecurityGroupRequest request);
     DescribeSecurityGroupsResponse describeSecurityGroups(DescribeSecurityGroupsRequest request);
     RunInstancesResponse runInstances(RunInstancesRequest request);
+    DeleteVpcResponse deleteVpc(DeleteVpcRequest mockVpcRequest);
     StopInstancesResponse stopInstances(StopInstancesRequest request);
     DescribeInstancesResponse describeInstances(DescribeInstancesRequest request);
     CreateDbInstanceResponse createRdsInstance(CreateDbInstanceRequest request);

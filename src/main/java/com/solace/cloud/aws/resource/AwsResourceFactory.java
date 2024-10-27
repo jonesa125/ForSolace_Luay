@@ -52,9 +52,9 @@ public class AwsResourceFactory implements CloudResourceFactory {
                 createEc2Resources(awsService, features, awsVpcDetails);
             } catch (Exception e) {
                 logger.error(e.getMessage());
-                // Handle code for deleting a VPC - not implemented
-                //
-                // deleteVPC()
+                // Handle code for deleting a VPC
+                VpcResourceManager.deleteVPC(awsVpcDetails.get("vpcId"));
+                logger.info("EC2 failed to create - deleted the VPC Id: " + awsVpcDetails.get("vpcId") + "that was created prior to EC2 create action");
                 throw new RuntimeException("EC2 failed to create");
             }
 
@@ -62,9 +62,9 @@ public class AwsResourceFactory implements CloudResourceFactory {
                 createRdsResources(awsService, features, awsVpcDetails);
             } catch (Exception e) {
                 logger.error(e.getMessage());
-                // Handle code for deleting a VPC - not implemented
-                //
-                // deleteVPC()
+                // Handle code for deleting a VPC
+                VpcResourceManager.deleteVPC(awsVpcDetails.get("vpcId"));
+                logger.info("RDS failed to create - deleted the VPC Id: " + awsVpcDetails.get("vpcId") + "that was created prior to RDS create action");
                 throw new RuntimeException("RDS failed to create");
             }
         }

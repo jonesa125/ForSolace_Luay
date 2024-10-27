@@ -4,7 +4,6 @@ import software.amazon.awssdk.services.ec2.model.*;
 import software.amazon.awssdk.services.rds.model.*;
 import software.amazon.awssdk.services.ec2.model.Subnet;
 import java.util.Collections;
-import java.util.List;
 
 
 public class MockAwsService implements CasAwsService {
@@ -79,6 +78,17 @@ public class MockAwsService implements CasAwsService {
     }
 
     @Override
+    public DeleteVpcResponse deleteVpc(DeleteVpcRequest mockVpcRequest) {
+        // Simulate a response
+        DeleteVpcRequest.builder()
+                .vpcId(mockVpcRequest.vpcId())
+                .build();
+
+        return DeleteVpcResponse.builder().build();
+    }
+
+
+    @Override
     public RunInstancesResponse runInstances(RunInstancesRequest mockInstanceRequest) {
         // Simulate a response
         Instance mockInstance = Instance.builder()
@@ -114,7 +124,7 @@ public class MockAwsService implements CasAwsService {
         // Create a mock Instance
         Instance instance = Instance.builder()
                 .instanceId(mockInstanceRequest.instanceIds().get(0))
-                .instanceType("t2.micro")
+                .instanceType("t2.micro-slowcomputer")
                 .state(state -> state.name("running"))
                 .build();
 

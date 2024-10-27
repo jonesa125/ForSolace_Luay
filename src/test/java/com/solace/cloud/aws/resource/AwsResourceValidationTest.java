@@ -1,6 +1,9 @@
 package com.solace.cloud.aws.resource;
 
+import com.solace.configHandler.aws.Ec2;
 import com.solace.configHandler.aws.Rds;
+import com.solace.configHandler.aws.Subnet;
+import com.solace.configHandler.aws.Vpc;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -9,6 +12,134 @@ import static org.mockito.Mockito.*;
 import java.util.Map;
 
 public class AwsResourceValidationTest {
+
+    private static final String REGION = "us-east-1";
+
+    @Test
+    void testValidateCreateVPCConfig_NullVPC() {
+        assertNull(AwsResourceValidation.validateCreateVPCConfig(null, REGION), "Expected result to be null for null VPC config.");
+    }
+
+    @Test
+    void testValidateCreateVPCConfig_MissingCidrBlock() {
+        Vpc vpc = mock(Vpc.class);
+        when(vpc.getCidrblock()).thenReturn(null);
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () ->
+                AwsResourceValidation.validateCreateVPCConfig(vpc, REGION)
+        );
+        assertEquals("Invalid or missing VPC CIDR block: null", exception.getMessage());
+    }
+
+    @Test
+    void testValidateCreateVPCConfig_InvalidCidrBlock() {
+        Vpc vpc = mock(Vpc.class);
+        when(vpc.getCidrblock()).thenReturn("invalid-cidr");
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () ->
+                AwsResourceValidation.validateCreateVPCConfig(vpc, REGION)
+        );
+        assertEquals("Invalid or missing VPC CIDR block: invalid-cidr", exception.getMessage());
+    }
+
+    @Test
+    void testValidateCreateVPCConfig_MissingSubnet() {
+        Vpc vpc = mock(Vpc.class);
+        when(vpc.getCidrblock()).thenReturn("192.168.1.0/24");
+        when(vpc.getSubnet()).thenReturn(null);
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () ->
+                AwsResourceValidation.validateCreateVPCConfig(vpc, REGION)
+        );
+        assertEquals("Invalid or missing subnet", exception.getMessage());
+    }
+
+    @Test
+    void testValidateCreateVPCConfig_MissingSubnetCidrBlock() {
+        Vpc vpc = mock(Vpc.class);
+        when(vpc.getCidrblock()).thenReturn("192.168.1.0/24");
+
+        Subnet subnet = mock(Subnet.class);
+        when(vpc.getSubnet()).thenReturn(subnet);
+        when(subnet.getCidrblock()).thenReturn(null);
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () ->
+                AwsResourceValidation.validateCreateVPCConfig(vpc, REGION)
+        );
+        assertEquals("Invalid or missing Public Subnet CIDR block: null", exception.getMessage());
+    }
+
+    @Test
+    void testValidateCreateEC2Config_NullEc2() {
+        assertNull(AwsResourceValidation.validateCreateEC2Config(null), "Expected result to be null for null EC2 config.");
+    }
+
+    @Test
+    void testValidateCreateEC2Config_MissingInstType() {
+        Ec2 ec2 = mock(Ec2.class);
+        when(ec2.getInsttype()).thenReturn(null);
+        when(ec2.getAmi()).thenReturn("ami-12345678"); // Set other fields as needed
+
+        assertThrows(IllegalArgumentException.class, () ->
+                AwsResourceValidation.validateCreateEC2Config(ec2), "ec2 Instance type is missing");
+    }
+
+    @Test
+    void testValidateCreateEC2Config_MissingAmi() {
+        Ec2 ec2 = mock(Ec2.class);
+        when(ec2.getInsttype()).thenReturn("t2.micro");
+        when(ec2.getAmi()).thenReturn(null);
+
+        assertThrows(IllegalArgumentException.class, () ->
+                AwsResourceValidation.validateCreateEC2Config(ec2), "ec2 ami is missing");
+    }
+
+    @Test
+    void testValidateCreateEC2Config_ValidConfig() {
+        Ec2 ec2 = mock(Ec2.class);
+        when(ec2.getInsttype()).thenReturn("t2.micro");
+        when(ec2.getAmi()).thenReturn("ami-12345678");
+
+        Map<String, String> result = AwsResourceValidation.validateCreateEC2Config(ec2);
+        assertNotNull(result, "Expected result to be not null for valid EC2 config.");
+        // Additional assertions can be added based on the mapper output
+    }
+
+    @Test
+    void testValidateUpdateEC2Config_NullEc2() {
+        assertNull(AwsResourceValidation.validateUpdateEC2Config(null), "Expected result to be null for null EC2 config.");
+    }
+
+    @Test
+    void testValidateUpdateEC2Config_MissingState() {
+        Ec2 ec2 = mock(Ec2.class);
+        when(ec2.getState()).thenReturn(null);
+        when(ec2.getId()).thenReturn("i-1234567890abcdef0"); // Set other fields as needed
+
+        assertThrows(IllegalArgumentException.class, () ->
+                AwsResourceValidation.validateUpdateEC2Config(ec2), "ec2 state is missing");
+    }
+
+    @Test
+    void testValidateUpdateEC2Config_MissingId() {
+        Ec2 ec2 = mock(Ec2.class);
+        when(ec2.getState()).thenReturn("running");
+        when(ec2.getId()).thenReturn(null);
+
+        assertThrows(IllegalArgumentException.class, () ->
+                AwsResourceValidation.validateUpdateEC2Config(ec2), "ec2 id is missing");
+    }
+
+    @Test
+    void testValidateUpdateEC2Config_ValidConfig() {
+        Ec2 ec2 = mock(Ec2.class);
+        when(ec2.getState()).thenReturn("running");
+        when(ec2.getId()).thenReturn("i-1234567890abcdef0");
+
+        Map<String, String> result = AwsResourceValidation.validateUpdateEC2Config(ec2);
+        assertNotNull(result, "Expected result to be not null for valid EC2 config.");
+        // Additional assertions can be added based on the mapper output
+    }
 
     @Test
     void testValidateCreateRDSConfig_NullRds() {
