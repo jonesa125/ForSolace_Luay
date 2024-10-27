@@ -43,7 +43,6 @@ public class AwsResourceFactory implements CloudResourceFactory {
             Map<String, String> awsVpcDetails = new HashMap<>();
             try {
                 awsVpcDetails = createVpcResources(awsService, features, region);
-                createRdsResources(awsService, features, awsVpcDetails);
             } catch (Exception e) {
                 logger.error(e.getMessage());
                 throw new RuntimeException("VPC failed to create");

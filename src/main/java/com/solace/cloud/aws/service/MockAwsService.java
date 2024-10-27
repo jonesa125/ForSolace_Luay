@@ -67,8 +67,8 @@ public class MockAwsService implements CasAwsService {
     public DescribeVpcsResponse describeVpcs(DescribeVpcsRequest request) {
         // Create a mock VPC
         Vpc vpc = Vpc.builder()
-                .vpcId(request.vpcIds().get(0))
-                .cidrBlock("10.0.0.0/16")
+                .vpcId("vpcABCD")
+                .cidrBlock("10.0.6.0/16")
                 .state("available")
                 .build();
 
