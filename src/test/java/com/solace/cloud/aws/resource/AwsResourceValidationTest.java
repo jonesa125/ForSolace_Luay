@@ -2,10 +2,12 @@ package com.solace.cloud.aws.resource;
 
 import com.solace.configHandler.aws.Rds;
 import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import java.util.Map;
+
 public class AwsResourceValidationTest {
 
     @Test
@@ -109,12 +111,19 @@ public class AwsResourceValidationTest {
         when(rds.getName()).thenReturn("name");
         when(rds.getRetention()).thenReturn("retention");
 
-        // Assuming the mapper returns a non-null map
-        when(AwsResourceConfigMapper.RdsCreateConfigMapper(rds)).thenReturn(Map.of("key", "value"));
-
+        // Act
         Map<String, String> result = AwsResourceValidation.validateCreateRDSConfig(rds);
+
+        // Assert
         assertNotNull(result);
-        assertEquals("value", result.get("key"));
+        assertEquals("type", result.get("instanceType"));
+        assertEquals("id", result.get("identifier"));
+        assertEquals("storage", result.get("storage"));
+        assertEquals("engine", result.get("engine"));
+        assertEquals("user", result.get("username"));
+        assertEquals("pass", result.get("password"));
+        assertEquals("name", result.get("name"));
+        assertEquals("retention", result.get("retention"));
     }
 
     // Tests for validateUpdateRDSConfig
@@ -142,15 +151,13 @@ public class AwsResourceValidationTest {
     @Test
     void testValidateUpdateRDSConfig_ValidRds() {
         Rds rds = mock(Rds.class);
-        when(rds.getState()).thenReturn("state");
-        when(rds.getDbid()).thenReturn("dbid");
-
-        // Assuming the mapper returns a non-null map
-        when(AwsResourceConfigMapper.RdsUpdateConfigMapper(rds)).thenReturn(Map.of("key", "value"));
+        when(rds.getState()).thenReturn("art");
+        when(rds.getDbid()).thenReturn("1234");
 
         Map<String, String> result = AwsResourceValidation.validateUpdateRDSConfig(rds);
         assertNotNull(result);
-        assertEquals("value", result.get("key"));
+        assertEquals("art", result.get("state"));
+        assertEquals("1234", result.get("id"));
     }
 
 }

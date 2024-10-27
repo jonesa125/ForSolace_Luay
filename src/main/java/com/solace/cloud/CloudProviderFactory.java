@@ -5,9 +5,11 @@ import com.solace.configHandler.*;
 import com.solace.cloud.aws.resource.*;
 import com.solace.configHandler.aws.Properties;
 
+import java.util.Locale;
+
 public class CloudProviderFactory {
     public static void getResourceManager(CloudConfig cloudConfig) {
-        switch (cloudConfig.getProvider().toLowerCase()) {
+        switch (cloudConfig.getProvider()) {
             case "aws":
                 try {
                     ObjectMapper objectMapper = new ObjectMapper();
@@ -21,7 +23,7 @@ public class CloudProviderFactory {
                 break;
             //add others as necessary
             default:
-                throw new IllegalArgumentException("Unknown provider: " + cloudConfig.getProvider().toLowerCase());
+                throw new IllegalArgumentException("Unknown provider: " + cloudConfig.getProvider());
         }
     }
 }

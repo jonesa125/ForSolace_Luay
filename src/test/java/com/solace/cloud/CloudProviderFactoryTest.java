@@ -4,48 +4,47 @@ import com.solace.cloud.aws.resource.AwsResourceFactory;
 import com.solace.configHandler.*;
 import com.solace.configHandler.aws.Properties;
 import org.junit.jupiter.api.Test;
-import static org.mockito.Mockito.*;
-import org.mockito.MockedStatic;
-
-import java.util.Map;
+import org.mockito.MockedConstruction;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
+import java.util.Map;
 
 public class CloudProviderFactoryTest {
 
     @Test
-    public void testGetResourceManagerWithAws() {
+    void testGetResourceManager_WithAwsProvider() throws Exception {
         // Arrange
-        CloudConfig cloudConfig = mock(CloudConfig.class);
-        when(cloudConfig.getProvider()).thenReturn("aws");
-        when(cloudConfig.getProperties()).thenReturn(Map.of("action", "create"));
-
-        // Act
-        try (MockedStatic<AwsResourceFactory> mockedStatic = mockStatic(AwsResourceFactory.class)) {
+        CloudConfig cloudConfig = new CloudConfig();
+        cloudConfig.setProvider("aws");
+        cloudConfig.setProperties(Map.of("action", "create"));
+        // Mock construction of AwsResourceFactory
+        try (MockedConstruction<AwsResourceFactory> mockedConstruction = mockConstruction(AwsResourceFactory.class)) {
+            // Act
             CloudProviderFactory.getResourceManager(cloudConfig);
 
+            // Get the constructed instance from the mocked construction
+            AwsResourceFactory awsFactory = mockedConstruction.constructed().get(0);
+
+            // Assert
             Properties properties = new Properties();
             properties.setAction("create");
-            // Assert
-            AwsResourceFactory awsFactory = new AwsResourceFactory();
-            mockedStatic.verify(() -> awsFactory.processResources(properties));
+            verify(awsFactory).processResources(properties);
         }
     }
 
-//    @Test
-//    public void testGetResourceManagerWithUnknownProvider() {
-//        // Arrange
-//        CloudConfig cloudConfig = mock(CloudConfig.class);
-//        when(cloudConfig.getProvider()).thenReturn("unknown");
-//
-//        // Act & Assert
-//        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-//            CloudProviderFactory.getResourceManager(cloudConfig);
-//        });
-//        System.out.println(exception.getMessage());
-//        assertEquals("Unknown provider: unknown", exception.getMessage());
-//    }
+    @Test
+    void testGetResourceManager_WithUnknownProvider() {
+        // Arrange
+        CloudConfig cloudConfig = new CloudConfig();
+        cloudConfig.setProvider("unknown");
 
+        // Act & Assert
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            CloudProviderFactory.getResourceManager(cloudConfig);
+        });
+        assertEquals("Unknown provider: unknown", exception.getMessage());
+    }
 
 }
