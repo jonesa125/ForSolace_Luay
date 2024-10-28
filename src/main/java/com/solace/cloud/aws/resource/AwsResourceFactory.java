@@ -33,7 +33,7 @@ public class AwsResourceFactory implements CloudResourceFactory {
         }
     }
 
-    private void createResources(Properties properties) {
+    public void createResources(Properties properties) {
         CasAwsService awsService = AwsServiceFactory.createAwsService(true);
         String region = properties.getRegion();
         logger.debug("region: " + region);
@@ -70,7 +70,7 @@ public class AwsResourceFactory implements CloudResourceFactory {
         }
     }
 
-    private Map<String, String> createVpcResources(CasAwsService awsService, Features features, String region) {
+    public Map<String, String> createVpcResources(CasAwsService awsService, Features features, String region) {
         Map<String, String> awsVpcDetails = new HashMap<>();
         Map<String, String> vpcParamsMap = AwsResourceValidation.validateCreateVPCConfig(features.getVpc(), region);
         if (vpcParamsMap != null) {
@@ -80,7 +80,7 @@ public class AwsResourceFactory implements CloudResourceFactory {
         return awsVpcDetails;
     }
 
-    private void createEc2Resources(CasAwsService awsService, Features features, Map<String, String> awsVpcDetails) throws InterruptedException {
+    public void createEc2Resources(CasAwsService awsService, Features features, Map<String, String> awsVpcDetails) throws InterruptedException {
         Map<String, String> ec2Props = AwsResourceValidation.validateCreateEC2Config(features.getEc2());
         if (ec2Props != null) {
             if (awsVpcDetails.isEmpty()) {
@@ -97,7 +97,7 @@ public class AwsResourceFactory implements CloudResourceFactory {
         }
     }
 
-    private void createRdsResources(CasAwsService awsService, Features features, Map<String, String> awsVpcDetails) {
+    public void createRdsResources(CasAwsService awsService, Features features, Map<String, String> awsVpcDetails) {
         Map<String, String> rdsProps = AwsResourceValidation.validateCreateRDSConfig(features.getRds());
         if (awsVpcDetails.isEmpty()) {
             throw new IllegalArgumentException("Abort: RDS requires a VPC to be configured");
@@ -114,7 +114,7 @@ public class AwsResourceFactory implements CloudResourceFactory {
         }
     }
 
-    private void updateResources(Properties properties) {
+    public void updateResources(Properties properties) {
         MockAwsService awsService = AwsServiceFactory.createAwsService(true);
         String region = properties.getRegion();
         logger.debug("region: " + region);
