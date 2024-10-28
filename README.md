@@ -1,6 +1,9 @@
 To build program:
 mvn clean package
 
+to run program for all resource creation:
+java -jar target\CodingAssessment-1.0-SNAPSHOT.jar -c aws_full_config.yml
+
 to run program for vpc creation:
 java -jar target\CodingAssessment-1.0-SNAPSHOT.jar -c aws_create_vpc_config.yml
 
@@ -33,11 +36,12 @@ For the purposes of this exercise:
 8) tried to keep this is as simple as possible
 9) One thing I noticed is that there are requirements for an ec2 to have a vpc/subnet however the api provides you a default vpc so you don't need to create one.  However, I created 
 a vpc/subnet for the ec2 instances that were created in the program
-10) when creating EC2/RDS I didn't do a "dry run,"describe" or "verify" (these could be mocked out as well)
-11) Did not include "delete" resources - however this would be important because you would want to track all the resources that
+10) when creating EC2/RDS I didn't do a "dry run, or "verify" (these could be mocked out as well)
+11) Include "delete" resources for VPC only - however this would be important because you would want to track all the resources that
 that were created and if an exception happened during the creation of another resosurce type then we could unwind all of the creations by looking at this map and then deleting as necessary
-12) I quickly created one unit test but if I had more time - I would have created more. 
-
+12) I created some unit tests. More could be done
+13) I did a describe before and after for VPC and RDS. For EC2 I didn't see how a describe before would be useful (lack of knowledge here) but I did a describe after
+ 
 I tried separate generic cloud yaml properties from aws specific ones.  It took me a while to realize the snake yaml does not cameCase or underscores in the property names.  
 
 Overall I enjoyed the assignment. My hope is that it covers most of what you are looking for.

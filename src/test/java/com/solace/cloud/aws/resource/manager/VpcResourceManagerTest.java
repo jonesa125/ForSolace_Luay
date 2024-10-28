@@ -113,7 +113,6 @@ public class VpcResourceManagerTest {
         vpcResourceManager.confirmVpcCreation(vpcId);
     }
 
-
     void testValidate_ReturnsTrue() {
         assertTrue(vpcResourceManager.validate());
     }

@@ -44,7 +44,6 @@ class AwsResourceFactoryTest {
 
         awsResourceFactory.processResources(mockProperties);
 
-        // Verify that createResources is called with the correct properties
         verify(mockProperties, times(2)).getAction();
     }
 
@@ -54,7 +53,6 @@ class AwsResourceFactoryTest {
 
         awsResourceFactory.processResources(mockProperties);
 
-        // Verify that updateResources is called with the correct properties
         verify(mockProperties, times(2)).getAction();
     }
 

@@ -88,7 +88,6 @@ public class Ec2ResourceManagerTest {
         // Given
         when(mockAws.runInstances(any(RunInstancesRequest.class))).thenReturn(RunInstancesResponse.builder().build());
 
-        // When & Then
         RuntimeException thrown = assertThrows(RuntimeException.class, () -> {
             ec2ResourceManager.create(ec2Map, subnetId, groupId);
         });
