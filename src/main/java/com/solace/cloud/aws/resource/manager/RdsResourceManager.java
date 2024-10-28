@@ -49,7 +49,7 @@ public class RdsResourceManager implements CloudResourceManager {
     }
 
     // Method to check if the DB instance identifier is available
-    private boolean isDbInstanceIdentifierAvailable(String dbInstanceIdentifier) {
+    boolean isDbInstanceIdentifierAvailable(String dbInstanceIdentifier) {
         DescribeDbInstancesRequest describeRequest = DescribeDbInstancesRequest.builder()
                 .dbInstanceIdentifier(dbInstanceIdentifier)
                 .build();
@@ -66,7 +66,7 @@ public class RdsResourceManager implements CloudResourceManager {
     }
 
     // Method to confirm the RDS instance creation
-    private void confirmRdsCreation(String dbInstanceIdentifier) {
+    void confirmRdsCreation(String dbInstanceIdentifier) {
         DescribeDbInstancesRequest request = DescribeDbInstancesRequest.builder()
                 .dbInstanceIdentifier(dbInstanceIdentifier)
                 .build();
